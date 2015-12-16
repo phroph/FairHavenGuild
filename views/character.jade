@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
+
+  div(ng-app="character", ng-controller="characterController")
+    p {{ object }}
+    p {{ object.lastModified }}
+    img(src="/characterIcon/{{ object.thumbnail }}")
+  script.
+    var app = angular.module("character", [])
+
+    app.controller("characterController", function ($scope, $http) {
+      $http.get("https://us.api.battle.net".concat("/wow/character/").concat('#{realm}').concat("/").concat('#{name}').concat("?locale=en_US&apikey=55v24wzgcyt295756q853cmc4hkd9xf2")).then(function (response) {
+        $scope.object = response.data;
+      });
+    });
