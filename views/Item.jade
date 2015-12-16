@@ -1,0 +1,15 @@
+//
+   Created by Phillip on 12/16/2015.
+
+mixin item(itemId)
+        script(src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
+
+        div(ng-app = "#{itemId}", ng-controller = "#{itemId}Controller")
+
+        script.
+          console.log(#{itemId});
+
+mixin preview(icon, name)
+    p
+        img(src="/icons/#{icon}",style="vertical-align:middle;padding-left:6px;padding-right:6px;")
+        span #{name}

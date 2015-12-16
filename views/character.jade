@@ -2,16 +2,19 @@ extends layout
 
 block content
   script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
-
+  include ./item.jade
   div(ng-app="character", ng-controller="characterController")
-    p {{ object }}
-    p {{ object.lastModified }}
-    img(src="/characterIcon/{{ object.thumbnail }}")
+    img(src="/characterIcon/{{ object.thumbnail }}",style="vertical-align:middle;")
+    h2(style="display:inline;padding-left:10px;") #{name}'s gear:
+    div(ng-repeat="item in items", ng-if="$index > 1")
+      +preview("{{item.icon}}", "{{item.name}}")
+  +item(100)
   script.
     var app = angular.module("character", [])
 
     app.controller("characterController", function ($scope, $http) {
-      $http.get("https://us.api.battle.net".concat("/wow/character/").concat('#{realm}').concat("/").concat('#{name}').concat("?locale=en_US&apikey=55v24wzgcyt295756q853cmc4hkd9xf2")).then(function (response) {
+      $http.get("https://us.api.battle.net".concat("/wow/character/").concat('#{realm}').concat("/").concat('#{name}').concat("?fields=items&locale=en_US&apikey=55v24wzgcyt295756q853cmc4hkd9xf2")).then(function (response) {
         $scope.object = response.data;
+        $scope.items = $scope.object.items;
       });
     });
