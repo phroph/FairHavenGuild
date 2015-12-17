@@ -6,3 +6,30 @@ body {
 a {
   color: #00B7FF;
 }
+
+ul.itemList {
+  list-style-type: none;
+  display: inline-block;
+  width: 800px;
+}
+
+li.item {
+  display: inline-block;
+  width: 300px;
+  padding-right:100px;
+}
+
+.itemName {
+  display: inline-block;
+  font-weight: bolder;
+  width: 200px;
+}
+
+.itemContainer {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.itemLevel {
+
+}

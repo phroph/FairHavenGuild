@@ -9,7 +9,10 @@ mixin item(itemId)
         script.
           console.log(#{itemId});
 
-mixin preview(icon, name)
-    p
+mixin preview(icon, name, level)
+    li(class="item")
         img(src="/icons/#{icon}",style="vertical-align:middle;padding-left:6px;padding-right:6px;")
-        span #{name}
+        div(class="itemContainer")
+            span(class="itemName") #{name}
+            br
+            span(class="itemLevel") #{level}

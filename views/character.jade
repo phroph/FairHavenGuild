@@ -6,8 +6,10 @@ block content
   div(ng-app="character", ng-controller="characterController")
     img(src="/characterIcon/{{ object.thumbnail }}",style="vertical-align:middle;")
     h2(style="display:inline;padding-left:10px;") #{name}'s gear:
-    div(ng-repeat="item in items", ng-if="$index > 1")
-      +preview("{{item.icon}}", "{{item.name}}")
+    br
+    ul(class="itemList")
+      span(ng-repeat="item in items", ng-if="$index > 1")
+        +preview("{{item.icon}}", "{{item.name}}", "{{item.itemLevel}}")
   +item(100)
   script.
     var app = angular.module("character", [])
