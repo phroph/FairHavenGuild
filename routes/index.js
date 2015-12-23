@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/icons/:name', function(req, res) {
-  var p = path.join(__dirname, '..\\icons', req.params.name.toLowerCase().concat('.png'));
+  var p = path.join(__dirname, '../icons', req.params.name.toLowerCase().concat('.png'));
   console.log(p);
   fs.exists(p, function(exists){
     if(exists) {

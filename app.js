@@ -44,7 +44,7 @@ passport.deserializeUser(Account.deserializeUser());
 passport.use(new BnetStrategy({
   clientID: BNET_ID,
   clientSecret: BNET_SECRET,
-  callbackURL: "https://localhost:3000/auth/bnet/callback"
+  callbackURL: "https://fairhavenguild.com/auth/bnet/callback"
 }, function(accessToken, refreshToken, profile, done) {
   return done(null, profile);
 }));

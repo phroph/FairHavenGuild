@@ -2,7 +2,7 @@ extends layout
 
 block content
   script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
-  include ./item.jade
+  include item
   div(class="character", ng-app="character", ng-controller="characterController")
     div(class="characterPreview")
       img(src="/characterIcon/{{ object.thumbnail }}",style="vertical-align:middle;")
