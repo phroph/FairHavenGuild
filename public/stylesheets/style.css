@@ -7,15 +7,16 @@ a {
   color: #00B7FF;
 }
 
-ul.itemList {
+.itemList {
   list-style-type: none;
   display: inline-block;
   width: 800px;
 }
 
-li.item {
+.item {
   display: inline-block;
   width: 300px;
+  padding-bottom: 10px;
   padding-right:100px;
 }
 
@@ -28,6 +29,20 @@ li.item {
 .itemContainer {
   display: inline-block;
   vertical-align: middle;
+}
+
+.characterPanel {
+  padding-left: 100px;
+}
+
+.characterPreview {
+  padding-left: 250px;
+}
+
+.characterContainer {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 15px;
 }
 
 .itemLevel {

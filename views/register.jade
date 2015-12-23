@@ -1,0 +1,18 @@
+//
+   Created by Phillip on 12/17/2015.
+
+extends layout
+
+block content
+    div
+        form(action='/register',method='post')
+            div(data-role='fieldcontain')
+                fieldset(data-role='controlgroup')
+                    label(for='username') username
+                        input(id='username',type='text',value='',placeholder='@',name='username')
+            div(data-role='fieldcontain')
+                 fieldset(data-role='controlgroup')
+                     label(for='password') password
+                         input(id='password',type='password',value='',placeholder='a',name='password')
+            div(data-role='fieldcontain')
+                 input(type='submit',value='Sign Up',data-transition='fade', data-theme='c')

@@ -1,6 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="bin\www" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="C:/Program Files/nodejs/node" path-to-js-file="bin/www" working-dir="$PROJECT_DIR$">
     <envs>
+      <env name="BNET_SECRET" value="nMuMuxXC4R44t9wCH8DEjkGaef3fXsGc" />
+      <env name="BNET_ID" value="55v24wzgcyt295756q853cmc4hkd9xf2" />
       <env name="DEBUG" value="FairHavenGuild:*" />
     </envs>
     <browser url="http://localhost:3000/" />

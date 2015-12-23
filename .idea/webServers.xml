@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="648b8f99-8090-4338-a93f-db6176635c15" name="Tidus" url="http://192.168.1.185">
+        <fileTransfer host="192.168.1.185" port="21" rootFolder="/home/phroph" username="phroph">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
