@@ -8,7 +8,11 @@ var mongoose = require('mongoose'),
 
 var Account = new Schema({
     username: String,
-    password: String
+    password: String,
+    bnet    : {
+        id  : String,
+        token: String
+    }
 });
 
 Account.plugin(passportLocalMongoose);

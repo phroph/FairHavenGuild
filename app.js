@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var passport = require('passport');
 var mongoose = require('mongoose');
-var Account = require('./models/account');
+var session = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
 var BnetStrategy = require('passport-bnet').Strategy;
 var BNET_ID = process.env.BNET_ID
@@ -21,6 +21,42 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// passport config
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(function(user, done) {
+  if(user.id.substring(0,5) == "bnet-") {
+    user.id = user.id.substring(5);
+    Account.findOne({ 'bnetId' : user.id}, function(err, bnetUser) {
+      if(err) {
+        console.log("Could not find account associated with id: " + user.id);
+        done(err);
+      } else if(bnetUser == null) {
+        console.log("Could not find account associated with id: " + user.id);
+        done(null, null);
+      } else {
+        console.log("Found user for Battle.net id: " + user.id);
+        console.log("Serializing: " + bnetUser.id);
+        done(null, bnetUser.id);
+      }
+    })
+  } else {
+    console.log("Serializing: " + user.id);
+    done(null, user.id);
+  }
+});
+passport.deserializeUser(function(id, done) {
+  console.log("Deserializing: " + id);
+  Account.findOne({ '_id' : id}, function(err, user) {
+    if (err) {
+      done(err);
+    } else {
+      console.log("Found user: " + user);
+      done(null, user);
+    }
+  });
+});
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -28,26 +64,39 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'somestupidsecret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
 
-// passport config
-var Account = require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+
 
 // Use the BnetStrategy within Passport.
 passport.use(new BnetStrategy({
   clientID: BNET_ID,
   clientSecret: BNET_SECRET,
-  callbackURL: "https://fairhavenguild.com/auth/bnet/callback"
-}, function(accessToken, refreshToken, profile, done) {
+  callbackURL: "https://fairhavenguild.com/auth/bnet/callback",
+  passReqToCallback : true
+}, function(req, accessToken, refreshToken, profile, done) {
+  var user = req.user;
   console.log("BNet Auth Successful");
-  done(null, null);
+  console.log("Access Token: " + accessToken);
+  console.log("Refresh Token: " + refreshToken);
+  console.log("Profile: " + profile);
+  user.bnet.id = profile.id;
+  user.bnet.token = accessToken;
+  user.save(function(err) {
+    if (err)
+    {
+      console.log("Failed to connect BNet Account: " + err);
+      throw err;
+    } else {
+      console.log("Successfully connected BNet Account");
+      done(null, user);
+    }
+  });
 }));
 
 // mongoose
@@ -55,7 +104,7 @@ mongoose.connect('mongodb://localhost/passport_local_mongoose');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
-  console.log("connection success");
+  console.log("Connected to MongoDB");
 });
 
 // catch 404 and forward to error handler

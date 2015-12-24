@@ -8,6 +8,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
+  console.log("Current user: " + req.user);
   res.render('index', { title: 'Express' });
 });
 
@@ -56,17 +57,36 @@ router.post('/register', function(req, res) {
   });
 });
 
+router.get('/logout', function(req, res){
+  if(req.user) {
+    console.log("User is logged in, logging out.");
+    req.logout();
+  }
+  res.redirect('/');
+});
+
+router.get('/wow/user/characters', function(req, res) {
+  if(req.user) {
+    request.get('https://us.api.battle.net/wow/user/characters?access_token=' + req.user.bnet.token).pipe(res);
+  }
+});
+
+router.get('/profile/character', function(req, res) {
+  res.render('playerCharacter', {});
+});
+
 router.get('/auth/bnet',
-    passport.authenticate('bnet'));
+    passport.authorize('bnet', { scope : 'wow.profile' }));
 
 router.get('/auth/bnet/callback',
-    passport.authenticate('bnet', { failureRedirect: '/error/500/Access' }),
+    passport.authorize('bnet', { scope : 'wow.profile', failureRedirect: '/' }),
     function(req, res){
-      res.render('index', { title: 'Express' });
+      console.log("BNet Connect Successful");
+      res.render('index', { title: 'Success!' });
     });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-  console.log("successful auth");
+  console.log('Successfully logged in: ' + req.user.username);
   res.redirect('/');
 });
 
