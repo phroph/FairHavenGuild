@@ -7,19 +7,30 @@
 var app = require('../app');
 var debug = require('debug')('FairHavenGuild:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('keys/key.pem'),
+  cert: fs.readFileSync('keys/fairhavenguild_com.crt')
+};
+
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var securePort = normalizePort(process.env.SECURE_PORT || '3443');
 app.set('port', port);
+app.set('securePort', securePort);
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -28,6 +39,9 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+httpsServer.listen(securePort);
+httpsServer.on('error', onErrorSecure);
+httpsServer.on('listening', onListeningSecure);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -59,8 +73,8 @@ function onError(error) {
   }
 
   var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+      ? 'Pipe ' + port
+      : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -86,5 +100,45 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
+}
+
+/**
+ * Event listener for HTTPS server "listening" event.
+ */
+
+function onListeningSecure() {
+  var addr = httpsServer.address();
+  var bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
+  console.log('Listening securely on ' + bind);
+}
+
+/**
+ * Event listener for HTTPS server "error" event.
+ */
+
+function onErrorSecure(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof securePort === 'string'
+      ? 'Pipe ' + securePort
+      : 'Port ' + securePort;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
 }

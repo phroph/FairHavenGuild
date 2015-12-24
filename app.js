@@ -46,7 +46,8 @@ passport.use(new BnetStrategy({
   clientSecret: BNET_SECRET,
   callbackURL: "https://fairhavenguild.com/auth/bnet/callback"
 }, function(accessToken, refreshToken, profile, done) {
-  return done(null, profile);
+  console.log("BNet Auth Successful");
+  done(null, null);
 }));
 
 // mongoose

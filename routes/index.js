@@ -60,9 +60,9 @@ router.get('/auth/bnet',
     passport.authenticate('bnet'));
 
 router.get('/auth/bnet/callback',
-    passport.authenticate('bnet', { failureRedirect: '/' }),
+    passport.authenticate('bnet', { failureRedirect: '/error/500/Access' }),
     function(req, res){
-      res.redirect('/');
+      res.render('index', { title: 'Express' });
     });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
