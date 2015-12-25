@@ -18,7 +18,7 @@ block content
     var app = angular.module("character", [])
 
     app.controller("characterController", function ($scope, $http, $window) {
-      $http.get("https://us.api.battle.net".concat("/wow/character/").concat('#{realm}').concat("/").concat('#{name}').concat("?fields=items&locale=en_US&apikey=55v24wzgcyt295756q853cmc4hkd9xf2")).then(function(response) {
+      $http.get('/wow/character/#{realm}/#{name}').then(function(response) {
         $scope.object = response.data;
         $scope.items = $scope.object.items;
       }, function(response) {

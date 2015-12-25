@@ -65,12 +65,6 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-router.get('/wow/user/characters', function(req, res) {
-  if(req.user) {
-    request.get('https://us.api.battle.net/wow/user/characters?access_token=' + req.user.bnet.token).pipe(res);
-  }
-});
-
 router.get('/profile/character', function(req, res) {
   res.render('playerCharacter', {});
 });
