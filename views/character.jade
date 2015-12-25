@@ -18,7 +18,7 @@ block content
     var app = angular.module("character", [])
 
     app.controller("characterController", function ($scope, $http, $window) {
-      $http.get('/wow/character/#{realm}/#{name}').then(function(response) {
+      $http.get('/api/wow/character/#{realm}/#{name}').then(function(response) {
         $scope.object = response.data;
         $scope.items = $scope.object.items;
       }, function(response) {

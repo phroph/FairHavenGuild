@@ -14,12 +14,11 @@ block content
     var app = angular.module("characters", [])
 
     app.controller("charactersController", function ($scope, $http, $window) {
-      $http.get('/account/user').then(function(response) {
+      $http.get('/api/account/user').then(function(response) {
         $scope.battletag = response.data.battletag;
       })
-      $http.get('/wow/user/characters').then(function(response) {
+      $http.get('/api/wow/user/characters').then(function(response) {
         $scope.characters = response.data.characters;
       }, function(response) {
-        $window.location.href = "/error/" + response.status + "/" + "#{name}";
       });
     });

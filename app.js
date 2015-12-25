@@ -7,8 +7,8 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
 var BnetStrategy = require('passport-bnet').Strategy;
-var BNET_ID = process.env.BNET_ID
-var BNET_SECRET = process.env.BNET_SECRET
+var BNET_KEY = process.env.BNET_KEY;
+var BNET_SECRET = process.env.BNET_SECRET;
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -71,13 +71,13 @@ app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/', apis);
+app.use('/api', apis);
 
 
 
 // Use the BnetStrategy within Passport.
 passport.use(new BnetStrategy({
-  clientID: BNET_ID,
+  clientID: BNET_KEY,
   clientSecret: BNET_SECRET,
   callbackURL: "https://fairhavenguild.com/auth/bnet/callback",
   passReqToCallback : true
